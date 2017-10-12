@@ -12,17 +12,21 @@
         {% include 'social', color: text_color_social %}
       {% endif %}
 
-      <!-- begin mobile-nav -->
-      {% if section.settings.main_linklist != blank %}
-        {% assign selected_linklist = section.settings.main_linklist %}
-        {% include 'linklist-footer', selected_linklist: selected_linklist %}
-      {% endif %}
-
       <!-- begin secondary-nav -->
       {% if section.settings.secondary_linklist != blank %}
         {% assign selected_linklist = section.settings.secondary_linklist %}
         {% include 'linklist-footer', selected_linklist: selected_linklist %}
       {% endif %}
+
+      {% for block in section.blocks %}
+        <div class="px2 font-size--s">
+          {% if block.settings.html_mobile != '' %}
+            {{ block.settings.html_mobile }}
+          {% else %}
+            {{ block.settings.html }}
+          {% endif %}
+        </div>
+      {% endfor %}
 
       <div class="copyright px2 py3 font-size--s">
         <p>&copy; {{ 'now' | date: '%Y' }} <a href="/" class=" {{ text_color }}">{{ shop.name }}</a></p>
@@ -45,6 +49,13 @@
 
       </div>
 
+      {% if section.settings.main_linklist != blank %}
+        <div class="px2">
+          {% assign selected_linklist = section.settings.main_linklist %}
+          {% include 'linklist-footer', selected_linklist: selected_linklist %}
+        </div>
+      {% endif %}
+
     </div>
 
     <div class="site-footer__desktop md-dn--hide ">
@@ -62,26 +73,16 @@
 
         </div>
 
-        <div class="grid__item {{ col_size }}">
-          {% if section.settings.main_linklist != blank %}
-            <!-- begin mobile-nav -->
-            {% if section.settings.main_linklist != blank %}
-              {% assign selected_linklist = section.settings.main_linklist %}
-              {% include 'linklist-footer', selected_linklist: selected_linklist %}
+        {% for block in section.blocks %}
+          <div class="grid__item {{ col_size }}  font-size--s">
+            {% if block.settings.html_mobile != '' %}
+              <div class="md-dn--hide">{{ block.settings.html }}</div>
+              <div class="hide md-dn--show">{{ block.settings.html_mobile }}</div>
+            {% else %}
+              {{ block.settings.html }}
             {% endif %}
-          {% endif %}
-        </div>
-
-
-        <div class="grid__item {{ col_size }}">
-          {% if section.settings.secondary_linklist != blank %}
-            <!-- begin secondary-nav -->
-            {% if section.settings.secondary_linklist != blank %}
-              {% assign selected_linklist = section.settings.secondary_linklist %}
-              {% include 'linklist-footer', selected_linklist: selected_linklist %}
-            {% endif %}
-          {% endif %}
-        </div>
+          </div>
+        {% endfor %}
 
         {% if section.settings.show_social_icons %}
         <div class="grid__item {{ col_size   }} text-align--right">
@@ -124,6 +125,13 @@
         </div>
       </div>
 
+      {% if section.settings.main_linklist != blank %}
+        <div>
+          {% assign selected_linklist = section.settings.main_linklist %}
+          {% include 'linklist-footer', selected_linklist: selected_linklist %}
+        </div>
+      {% endif %}
+
     </div>
 
 
@@ -153,11 +161,6 @@
       "default": "footer"
     },
     {
-      "type": "link_list",
-      "id": "secondary_linklist",
-      "label": "Secondary Menu"
-    },
-    {
       "id": "extra_information",
       "type": "richtext",
       "label": "About text",
@@ -173,6 +176,27 @@
       "id": "show_social_icons",
       "label": "Show social icons",
       "info": "Social icons are configured under General Settings"
+    }
+  ],
+  "blocks" :  [
+    {
+      "type": "footer_html",
+      "name": "Custom HTML",
+      "limit": 2,
+      "settings": [
+        {
+           "type":      "html",
+           "id":        "html",
+           "label":     "HTML",
+           "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "id": "html_mobile",
+          "type": "html",
+          "label": "HTML - Mobile",
+          "info": "Optional - use this if you would like different formatting / text on mobile devices."
+        }
+      ]
     }
   ]
 }

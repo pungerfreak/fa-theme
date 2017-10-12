@@ -96,6 +96,10 @@
           {
             "value": "black",
             "label": "Black"
+          },
+          {
+            "value": "gray",
+            "label": "Gray"
           }
         ]
       },

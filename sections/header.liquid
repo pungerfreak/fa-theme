@@ -121,42 +121,6 @@
       <!-- //site-nav -->
     </div>
 
-
-    <div class="grid__item site-header__logo-col text-center">
-
-      {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
-      {% capture image_size_px %}{{ section.settings.logo_max_width | escape }}px{% endcapture %}
-      {% capture image_size_2x %}{{ section.settings.logo_max_width | times: 2 }}x{% endcapture %}
-
-      {% comment %}
-      Style the logo grid item to be the same width set as the logo
-      {% endcomment %}
-      <style>
-        .site-header__logo-col {
-          width: {{ image_size_px }};
-        }
-      </style>
-
-      {% if template == 'index' %}
-        <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization">
-      {% else %}
-        <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization">
-      {% endif %}
-        {% if section.settings.logo %}
-          <a href="/" itemprop="url" class="site-header__logo-link">
-            <img src="{{ section.settings.logo | img_url: image_size_2x }}" alt="{{ shop.name }}" itemprop="logo" width="{{ image_size }}">
-          </a>
-        {% else %}
-          <a href="/" itemprop="url" class="text-align--center">{{ shop.name }}</a>
-        {% endif %}
-      {% if template == 'index' %}
-        </h1>
-      {% else %}
-        </div>
-      {% endif %}
-
-    </div>
-
     {% comment %}
       Desktop meta (cart, search, social)
     {% endcomment %}
@@ -228,6 +192,32 @@
         <span id="CartCount" class="cart-count cart-count--mobile">{{ cart.item_count }}</span>
       </a>
     </div>
+
+  </div>
+
+  <div class="site-header__logo-col text-center">
+
+    {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+    {% capture image_size_px %}{{ section.settings.logo_max_width | escape }}px{% endcapture %}
+    {% capture image_size_2x %}{{ section.settings.logo_max_width | times: 2 }}x{% endcapture %}
+
+    {% if template == 'index' %}
+      <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization">
+    {% else %}
+      <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization">
+    {% endif %}
+      {% if section.settings.logo %}
+        <a href="/" itemprop="url" class="site-header__logo-link">
+          <img src="{{ section.settings.logo | img_url: image_size_2x }}" alt="{{ shop.name }}" itemprop="logo" width="{{ image_size }}">
+        </a>
+      {% else %}
+        <a href="/" itemprop="url" class="text-align--center">{{ shop.name }}</a>
+      {% endif %}
+    {% if template == 'index' %}
+      </h1>
+    {% else %}
+      </div>
+    {% endif %}
 
   </div>
 

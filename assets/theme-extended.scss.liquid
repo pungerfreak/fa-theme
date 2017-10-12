@@ -1,0 +1,53 @@
+// Theme Colors
+$colorPrimary: {{ settings.color_primary }};
+$colorSecondary: {{ settings.color_secondary }};
+
+$colorMainAccent: {{ settings.color_main_accent }};
+$colorSecondaryAccent: {{ settings.color_secondary_accent }};
+$colorShopAccent: {{ settings.color_shop_accent }};
+
+$colorSections: {{ settings.color_section_bg }};
+// Backgrounds
+$colorBody: {{ settings.color_body_bg }};
+$colorSection: {{ settings.color_section_bg }};
+$colorWhite: #fff;
+$colorBlack: #000;
+$colorGray: #ddd;
+
+@mixin clearfix() {
+  &:after {
+    content: '';
+    display: table;
+    clear: both; }
+  *zoom: 1;
+}
+
+.bg--gray { background-color: $colorGray;}
+
+.site-header__logo-col {
+  width: 100%;
+}
+
+.site-header__logo-link {
+  max-width: 800px;
+}
+
+.site-header__mobile-icon--cart {
+  float: right !important;
+}
+
+.footer-nav {
+  @include clearfix;
+
+  margin: 0;
+  background: $colorPrimary;
+}
+
+.footer-nav__item {
+  float: left;
+  padding: 0.5rem 1rem;
+
+  a {
+    color: $colorGray;
+  }
+}
