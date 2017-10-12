@@ -1,0 +1,150 @@
+
+{% assign placeholder = false %}
+{% if section.settings.feature_image %}
+  {% assign image_src = section.settings.feature_image | img_url: '1600x1600' %}
+{% else %}
+  {% assign placeholder = true %}
+{% endif %}
+{% assign main_text =  section.settings.main_text | escape %}
+{% assign sub_text =  section.settings.sub_text | escape %}
+{% assign cta_text = section.settings.cta_text | escape %}
+{% assign cta_url = section.settings.cta_url %}
+
+
+<section class="feature-image section m0 section--feature-image bg--section">
+  <div  class="p0 clearfix relative feature-image__container ">
+
+    {% if placeholder %}
+    <div class="placeholder full">
+      {{ 'lifestyle-1' | placeholder_svg_tag }}
+    </div>
+    {% else %}
+    <div  class="full bg-cover  blur-up lazyload"
+          style="background: url('{{ section.settings.feature_image | img_url: '100x' }}') no-repeat center center"
+          data-bgset="{{ section.settings.feature_image | img_url: '800x' }} 800w, {{ section.settings.feature_image | img_url: '1200x' }} 1200w, {{ section.settings.feature_image | img_url: '1600x' }} 1600w"
+          data-sizes="auto">
+    </div>
+    {% endif %}
+
+    <div class="absolute top--0 left--0 full p2 lg--p4">
+      <div class="table full">
+        <div class="table-cell {{ section.settings.content_position }}">
+
+          {% if sub_text != '' %}
+          <h4 class="md--font-size--s lg--font-size--l regular f--main color--{{ section.settings.text_color }}">{{ sub_text }}</h4>
+          {% endif %}
+
+          {% if main_text != '' %}
+          <h2 class="f--title font-size--xxxl lg--font-size--xxxxxl color--{{ section.settings.text_color }} mt2">{{ main_text }}</h2>
+          {% endif %}
+
+          {% if cta_url != blank %}
+          <a href="{{ cta_url }}" class="btn bg--{{ section.settings.text_color }} color--{{ section.settings.text_color }}-overlay feature-image__btn font-size--s mt3">{{ cta_text }}</a>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text overlay",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "sub_text",
+      "label": "Sub text",
+      "default": "Subheading goes here",
+      "info": "Optional"
+    },
+    {
+      "type": "text",
+      "id": "main_text",
+      "label": "Main text",
+      "default": "Image with text overlay",
+      "info": "Optional"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Optional: Call to action URL"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Call to action button text",
+      "default": "Shop Now"
+    },
+    {
+     "type": "select",
+     "id": "text_color",
+     "options": [
+        { "value": "primary", "label": "Primary"},
+        { "value": "main-accent", "label": "Main Accent"},
+        { "value": "shop-accent ", "label": "Shop Accent"},
+        { "value": "secondary-accent", "label": "Secondary Accent"},
+        { "value": "white ", "label": "White"},
+        { "value": "black", "label": "Black"}
+     ],
+     "label": "Text and button color"
+     },
+     {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content Position",
+      "options": [
+        {
+          "value": "text-align--left align--top",
+          "label": "Top Left"
+        },
+        {
+          "value": "text-align--center align--top",
+          "label": "Top Center"
+        },
+        {
+          "value": "text-align--right align--top",
+          "label": "Top Right"
+        },
+        {
+          "value": "text-align--left align--middle",
+          "label": "Middle Left"
+        },
+        {
+          "value": "text-align--center align--middle",
+          "label": "Middle Center"
+        },
+        {
+          "value": "text-align--right align--middle",
+          "label": "Middle Right"
+        },
+        {
+          "value": "text-align--left align--bottom",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "text-align--center align--bottom",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "text-align--right align--bottom",
+          "label": "Bottom Right"
+        }
+      ],
+      "default":   "text-align--center align--middle"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text overlay",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

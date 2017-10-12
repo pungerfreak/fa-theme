@@ -1,0 +1,210 @@
+<!-- /snippets/section_instagram.liquid -->
+
+<section class="section bg--section section--instagram m0 {% if section.settings.title != '' %}py4{% else %}py3{% endif %} {% if section.settings.instagram_access_token == '' %}instagram--onboarding{% endif %}" data-accesstoken="{{ section.settings.instagram_access_token | escape }}" data-noposts="{{ section.settings.no_posts }}">
+  <div class="wrapper section--wrapper">
+
+    {% if section.settings.title != '' %}
+    <h2 class="t--section-title text-align--center f--main font-size--l lg--font-size--xl m0 mb3">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {% if section.settings.instagram_access_token != '' %}
+    <div class="grid grid--instagram">
+
+
+      {% if section.settings.no_posts == '10' %}
+        <div class="grid__item lg--one-half">
+
+          {% include 'instagram-item', index: 0, type: 'large' %}
+
+        </div>
+
+        <div class="grid__item mt1 lg--mt0 lg--one-half">
+
+          <div class="grid grid--instagram grid--instagram-inner">
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 1 %}
+            </div>
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 2 %}
+            </div>
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 3 %}
+            </div>
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 4 %}
+            </div>
+          </div>
+        </div>
+
+        <div class="grid__item lg--one-half mt1">
+
+          <div class="grid grid--instagram grid--instagram-inner">
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 5 %}
+            </div>
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 6 %}
+            </div>
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 7 %}
+            </div>
+            <div class="grid__item one-half">
+              {% include 'instagram-item', index: 8 %}
+            </div>
+          </div>
+        </div>
+
+        <div class="grid__item  lg--one-half mt1">
+
+          {% include 'instagram-item', index: 9, type: 'large' %}
+
+        </div>
+      {% else %}
+
+      <div class="grid__item mt1 lg--mt0 lg--one-quarter">
+
+        <div class="grid grid--instagram grid--instagram-inner">
+          <div class="grid__item">
+            {% include 'instagram-item', index: 0 %}
+          </div>
+          <div class="grid__item">
+            {% include 'instagram-item', index: 1 %}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid__item lg--one-half">
+
+        {% include 'instagram-item', index: 2, type: 'large' %}
+
+      </div>
+
+      <div class="grid__item mt1 lg--mt0 lg--one-quarter">
+
+        <div class="grid grid--instagram grid--instagram-inner">
+          <div class="grid__item">
+            {% include 'instagram-item', index: 3 %}
+          </div>
+          <div class="grid__item">
+            {% include 'instagram-item', index: 4 %}
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+    </div>
+    {% else %}
+
+      <div class="grid grid--instagram">
+        {% if section.settings.no_posts == '10' %}
+          <div class="grid__item one-half">
+            {% include 'instagram-item__placeholder' %}
+          </div>
+          <div class="grid__item one-half">
+            <div class="grid grid--instagram grid--instagram-inner">
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+            </div>
+          </div>
+          <div class="grid__item one-half mt1">
+            <div class="grid grid--instagram grid--instagram-inner">
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item one-half">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+            </div>
+          </div>
+          <div class="grid__item one-half  mt1">
+            {% include 'instagram-item__placeholder' %}
+          </div>
+        {% else %}
+          <div class="grid__item mt1 lg--mt0 lg--one-quarter">
+            <div class="grid grid--instagram grid--instagram-inner">
+              <div class="grid__item">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+            </div>
+          </div>
+          <div class="grid__item lg--one-half">
+            {% include 'instagram-item__placeholder' %}
+          </div>
+          <div class="grid__item mt1 lg--mt0 lg--one-quarter">
+            <div class="grid grid--instagram grid--instagram-inner">
+              <div class="grid__item">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+              <div class="grid__item">
+                {% include 'instagram-item__placeholder' %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+
+
+{% schema %}
+{
+  "name": "Instagram",
+  "class": "section-instagram",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Display Instagram images on the home page."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Instagram",
+      "info": "Leave blank if you don't want to show a section title."
+    },
+    {
+       "type": "text",
+       "id": "instagram_access_token",
+       "label": "Instagram access token",
+       "info": "See: [Grab your Instagram Access Token](http://www.girafficthemes.com/instagram)"
+    },
+    {
+       "type": "select",
+       "id": "no_posts",
+       "options": [
+          { "value": "5", "label": "5"},
+          { "value": "10 ", "label": "10"}
+       ],
+       "label": "No posts"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram feed",
+      "category": "Social media"
+    }
+  ]
+}
+{% endschema %}

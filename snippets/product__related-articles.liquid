@@ -1,0 +1,220 @@
+
+{% assign article_1 = '' %}
+{% assign article_2 = '' %}
+
+{% assign product_tags = product.tags %}
+{% comment %}
+  First assign all blogs we want to loop through
+{% endcomment %}
+{% assign all_articles = false %}
+{% assign all_articles_sorted = false %}
+
+{% if section.settings.blog_1 != '' %}
+  {% if all_articles %}
+    {% assign all_articles = all_articles | concat:blogs[section.settings.blog_1].articles %}
+  {% else %}
+    {% assign all_articles = blogs[section.settings.blog_1].articles %}
+  {% endif %}
+{% endif %}
+
+{% if section.settings.blog_2 != '' %}
+  {% if all_articles %}
+    {% assign all_articles = all_articles | concat:blogs[section.settings.blog_2].articles %}
+  {% else %}
+    {% assign all_articles = blogs[section.settings.blog_2].articles %}
+  {% endif %}
+{% endif %}
+
+{% if section.settings.blog_3 != '' %}
+  {% if all_articles %}
+    {% assign all_articles = all_articles | concat:blogs[section.settings.blog_3].articles %}
+  {% else %}
+    {% assign all_articles = blogs[section.settings.blog_3].articles %}
+  {% endif %}
+{% endif %}
+
+{% if section.settings.blog_4 != '' %}
+  {% if all_articles %}
+    {% assign all_articles = all_articles | concat:blogs[section.settings.blog_4].articles %}
+  {% else %}
+    {% assign all_articles = blogs[section.settings.blog_4].articles %}
+  {% endif %}
+{% endif %}
+
+{% if section.settings.blog_5 != '' %}
+  {% if all_articles %}
+    {% assign all_articles = all_articles | concat:blogs[section.settings.blog_5].articles %}
+  {% else %}
+    {% assign all_articles = blogs[section.settings.blog_5].articles %}
+  {% endif %}
+{% endif %}
+
+
+{% assign all_articles_sorted = all_articles | sort:'published_at' | reverse %}
+
+{% assign count = 0 %}
+
+{% if all_articles_sorted %}
+
+  {% comment %}
+  Now a quick example of showing the latest 10 articles from our master article list
+  {% endcomment %}
+
+  {% for article in all_articles_sorted %}
+
+    {% assign article_tags = article.tags %}
+
+    {% for tag in product_tags %}
+      {% assign tag_lowercase = tag | downcase %}
+      {% if article_tags contains tag_lowercase %}
+
+        {% if count == 0 %}
+          {% assign article_1 = article %}
+        {% endif %}
+        {% if count == 1 %}
+          {% assign article_2 = article %}
+        {% endif %}
+        {% assign count = count | plus: 1 %}
+
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% comment %}
+    Break once we find 2 articles
+    {% endcomment %}
+    {% if count == 2 %}
+      {% break %}
+    {% endif %}
+
+  {% endfor %}
+
+{% endif %}
+
+{% if count > 0  %}
+
+<section class="section bg--section m0 py4">
+  <div class="wrapper section--wrapper">
+
+    <h2 class="t--section-title text-align--center f--main font-size--l lg--font-size--xl m0 mb3">Related Articles</h2>
+
+    <div class="grid">
+
+      {% if count == 1  %}
+
+        {% assign article = article_1 %}
+        {% assign article_blog = article.url  | split: '/' %}
+        {% assign blog_slug = article_blog[2] %}
+        {% assign blog_title = blogs[blog_slug].title %}
+
+        <div class="grid__item  dt--seven-twelfths">
+          <a href="{{ article.url }}">
+              {% if article.image %}
+                <!-- responsive example: -->
+                <img
+                    data-sizes="auto"
+                    alt="{{ article.image.alt }}"
+                    src="{{ article | img_url: '10x'  }}"
+                    data-src="{{ article | img_url: '600x'  }}"
+                    data-srcset="{{ article | img_url: '600x'  }} 600w,
+                                 {{ article | img_url: '900x'  }} 900w,
+                                 {{ article | img_url: '1200x'  }} 1200w"
+                    class="lazyload article__image full blur-up" />
+
+              {% endif %}
+          </a>
+        </div>
+        <div class="grid__item dt--five-twelfths">
+          <h4 class="f--main regular font-size--xs  lg--font-size--s   mt3"><a href="/blogs/{{ article_blog[2] }}">{{ blog_title }}</a></h4>
+          <h3 class="f--title article__title article__title--feature font-size--xl lg--font-size--xxxl mt2">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </h3>
+
+          <hr class="my3 rule bg--main-accent text-align--left" />
+
+          <p class="f--body article__excerpt article__excerpt--feature lg--font-size--ml">
+            {% if article.excerpt.size > 0 %}
+              {{ article.excerpt }}
+            {% else %}
+              {{ article.content | strip_html | truncatewords: 20 }}
+            {% endif %}
+          </p>
+
+          <h5 class="f--main regular font-size--xs lg--font-size--s lg--font-size--s mt3">{{ article.author }}</h5>
+          <h6 class="mt1 regular f--main font-size--xs lg--font-size--s color--main-accent">{% include 'date', date_object: article.published_at  %}</h6>
+
+        </div>
+      {% else %}
+
+      {% assign article = article_1 %}
+        <div class="grid__item lg--one-half">
+          <article class="article article--row text-align--center mb3 lg--mb0">
+            <a href="{{ article.url }}">
+
+                {% if article.image %}
+                  <picture>
+                    <!--[if IE 9]><video style="display: none"><![endif]-->
+                    <source
+                      data-srcset="{{ article | img_url: '400x280', crop: 'center'  }}"
+                      media="(max-width: 768px)" />
+                    <source
+                        data-srcset="{{ article | img_url: '880x560', crop: 'center'  }}" />
+                    <!--[if IE 9]></video><![endif]-->
+                    <img
+                        src="{{ article | img_url: '10x7', crop: 'center'  }}"
+                        data-src="{{ article | img_url: '10x7', crop: 'center'  }}"
+                        class="lazyload article__image full block"
+                        alt="{{ article.image.alt }}" />
+                  </picture>
+                {% endif %}
+
+                {% assign article_blog = article.url  | split: '/' %}
+                {% assign blog_slug = article_blog[2] %}
+                {% assign blog_title = blogs[blog_slug].title %}
+                <h3 class="f--title font-size--ml lg--font-size--l dt--font-size--xl mt2">{{ article.title }}</h3>
+                <h5 class="f--main t--meta mt2 font-size--xs lg--font-size--s color--main-accent mt2">{% include 'date', date_object: article.published_at  %}</h5>
+
+            </a>
+          </article>
+        </div>
+
+        {% assign article = article_2 %}
+        <div class="grid__item lg--one-half">
+          <article class="article article--row mb3 text-align--center">
+            <a href="{{ article.url }}">
+
+                {% if article.image %}
+                  <picture>
+                    <!--[if IE 9]><video style="display: none"><![endif]-->
+                    <source
+                      data-srcset="{{ article | img_url: '400x280', crop: 'center'  }}"
+                      media="(max-width: 768px)" />
+                    <source
+                        data-srcset="{{ article | img_url: '880x560', crop: 'center'  }}" />
+                    <!--[if IE 9]></video><![endif]-->
+                    <img
+                        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                        data-src="{{ article | img_url: '10x10', crop: 'center'  }}"
+                        class="lazyload article__image full block"
+                        alt="image with artdirection" />
+                  </picture>
+                {% endif %}
+
+                {% assign article_blog = article.url  | split: '/' %}
+                {% assign blog_slug = article_blog[2] %}
+                {% assign blog_title = blogs[blog_slug].title %}
+                <h3 class="f--title font-size--ml lg--font-size--l dt--font-size--xl mt2">{{ article.title }}</h3>
+                <h5 class="f--main  t--meta mt2 font-size--xs lg--font-size--s color--main-accent mt2">{% include 'date', date_object: article.published_at  %}</h5>
+
+            </a>
+          </article>
+        </div>
+      {% endif %}
+
+
+
+    </div>
+
+  </div>
+</section>
+{% endif %}

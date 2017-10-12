@@ -1,0 +1,29 @@
+<article class="article article--row text-align--center mb3 lg--mb0">
+  <a href="{{ article.url }}">
+
+      {% if article.image %}
+        <picture>
+          <!--[if IE 9]><video style="display: none"><![endif]-->
+          <source
+            data-srcset="{{ article | img_url: '400x280', crop: 'center'  }}"
+            media="(max-width: 768px)" />
+          <source
+              data-srcset="{{ article | img_url: '640x448', crop: 'center'  }}" />
+          <!--[if IE 9]></video><![endif]-->
+          <img
+              src="{{ article | img_url: '20x14', crop: 'center'  }}"
+              data-src="{{ article | img_url: '20x14', crop: 'center'  }}"
+              class="lazyload article__image full block blur-up"
+              alt="{{ article.image.src }}"
+               />
+        </picture>
+      {% endif %}
+
+      {% assign article_blog = article.url  | split: '/' %}
+      {% assign blog_slug = article_blog[2] %}
+      {% assign blog_title = blogs[blog_slug].title %}
+      <h3 class="f--title font-size--ml lg--font-size--l mt2">{{ article.title }}</h3>
+      <h5 class="f--main t--meta mt2 font-size--xs lg--font-size--s color--main-accent mt2">{% include 'date', date_object: article.published_at  %}</h5>
+
+  </a>
+</article>

@@ -1,0 +1,16 @@
+{% assign type_classes = 'font-size--m lg--font-size--xs dt--font-size--m' %}
+{% if type == 'large' %}
+{% assign type_classes = 'lg--font-size--xl ' %}
+{% endif %}
+
+<a href="" target="_blank" class="block ratio-box lazyload instagram-item--{{ index }}  bg-cover"  style="background-color: #f5f5f5;">
+  <div class="ratio-box__content">
+  </div>
+  <div class="instagram-meta bg--main-accent-rgba">
+    <div class="table full">
+      <div class="table-cell text-align--center align--middle color--main-accent-overlay f--main instagram__caption md-dn--hide {{ type_classes }} px2">
+
+      </div>
+    </div>
+  </div>
+</a>

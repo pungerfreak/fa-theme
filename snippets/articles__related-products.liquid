@@ -1,0 +1,130 @@
+{% assign article_tags = article.tags %}
+
+{% assign count = 0 %}
+{% assign product_1 = '' %}
+{% assign product_2 = '' %}
+
+{% for product in collections.all.products %}
+
+  {% assign product_tags = product.tags | downcase %}
+  {% for tag in article_tags %}
+    {% assign tag_lowercase = tag | downcase %}
+    {% if product_tags contains tag_lowercase %}
+      {% if count == 0 %}
+        {% assign product_1 = product %}
+      {% endif %}
+      {% if count == 1 %}
+        {% assign product_2 = product %}
+      {% endif %}
+
+
+      {% assign count = count | plus: 1 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if count == 2 %}
+    {% break %}
+  {% endif %}
+
+{% endfor %}
+
+
+{% if count > 0  %}
+
+<section class="section bg--section m0 py4">
+  <div class="wrapper section--wrapper">
+
+    <h2 class="t--section-title text-align--center f--main font-size--l lg--font-size--xl m0 mb3">{{ section.settings.related_products_heading }}</h2>
+
+    {% if count == 1  %}
+      {% assign product = product_1 %}
+      {% capture selectID %}select-{{ product.handle }}{% endcapture %}
+      {% capture sectionID %}section-{{ product.handle }}{% endcapture %}
+      {% capture single_product_id %}section-{{ section.id }}-{{ product.handle }}{% endcapture %}
+      {% assign current_variant = product.selected_or_first_available_variant %}
+      {% assign show_quantity = section.settings.show_quantity %}
+      {% assign in_list = true %}
+
+      {% if section.settings.show_description_related  %}
+        {% assign paragraphs = product.description | split: '<p>' %}
+        {% assign short_description = paragraphs[1] | replace: '</p>', '' %}
+      {% endif %}
+
+
+      {% comment %}
+        Check if the product is on sale and set a variable to be used below.
+      {% endcomment %}
+      {% assign on_sale = false %}
+      {% if product.compare_at_price > product.price %}
+        {% assign on_sale = true %}
+      {% endif %}
+
+      <div itemscope itemtype="http://schema.org/Product" class="grid section-product single-product py2 clearfix" id="{{ sectionID }}" data-section-id="{{ single_product_id }}" data-money-format="{{ shop.money_format }}">
+
+        <div class="grid__item">
+          <div class="grid product-single">
+            <div class="grid__item lg--one-half dt--seven-twelfths text-center relative">
+              <div class="lg--mb0 product-single__imageHolder relative clearfix">
+                {% if on_sale %}
+                  <div class="product__on-sale color--white bg--shop-accent f--main font-size--xs lg--font-size--s">{{ 'products.product.on_sale' | t }}</div>
+                {% endif %}
+                {% for image in product.images limit:1 %}
+                <picture class="ProductPhotoImg">
+                  <!--[if IE 9]><video style="display: none"><![endif]-->
+                  <source
+                    data-srcset="{{ image.src | img_url: '800x'  }}"
+                    media="(max-width: 768px)" />
+                  <source
+                      data-srcset="{{ image.src | img_url: '2000x' }}" />
+                  <!--[if IE 9]></video><![endif]-->
+                  <img
+                      src="{{ image.src | img_url: '10x'  }}"
+                      data-src="{{ image.src | img_url: '10x'  }}"
+                      class="full blur-up lazyload left" />
+                </picture>
+                {% endfor %}
+              </div>
+            </div><!-- end product images -->
+
+            <div class="grid__item lg--one-half dt--five-twelfths text-align--center pt2 lg--pt1 dt--pt4">
+
+              <div class="mx--auto lg--four-fifths dt--three-fifths">
+                {% include 'product-page-form' %}
+              </div>
+
+            </div><!-- end product form -->
+
+          </div><!-- end images and form grid -->
+
+
+          <script type="application/json" id="ProductJson-{{ single_product_id }}">
+            {{ product | json }}
+          </script>
+
+          <script type="application/json" id="FirstVariant-{{ single_product_id }}">
+            {{ product.selected_or_first_available_variant | json }}
+          </script>
+
+        </div>
+
+      </div>
+    {% else %}
+
+      <div class="grid-uniform product-grid">
+        <div class="product-grid__inner clearfix">
+          {% assign product = product_1 %}
+          {% assign grid_item_width = 'one-whole lg--one-half mt4' %}
+          {% include 'product-grid-item', large: true %}
+
+          {% assign product = product_2 %}
+          {% assign grid_item_width = 'one-whole lg--one-half mt4' %}
+          {% include  'product-grid-item', large: true %}
+        </div>
+      </div>
+
+    {% endif %}
+
+  </div>
+</section>
+{% endif %}

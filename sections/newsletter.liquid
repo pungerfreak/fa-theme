@@ -1,0 +1,60 @@
+<section class="section section--newsletter m0 py3 color--secondary-accent-overlay  bg--secondary-accent">
+  <div class="wrapper section--wrapper text-align--center px2">
+    <div class="py3">
+      <h3 class="f--title font-size--xl">{{ section.settings.title | escape }}</h3>
+      <p class="f--main font-size--s lg--font-size--m">{{ section.settings.text | escape }}</p>
+
+      <div class="newsletter__form mx--auto mt3">
+      {% form 'customer' %}
+        {{ form.errors | default_errors }}
+        {% if form.posted_successfully? %}
+          <p class="form--success f--main">{{ 'general.newsletter_form.confirmation' | t }}</p>
+        {% else %}
+          <div class="input-group">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email"
+              name="contact[email]"
+              id="Email"
+              class="input-group-field input-underline input-underline--secondary-overlay f--main color--secondary-accent-overlay"
+              value="{% if customer %}{{ customer.email }}{% endif %}"
+              placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}"
+              autocorrect="off"
+              autocapitalize="off">
+            <span class="input-group-btn">
+              <button type="submit" class="btn newsletter__submit bg--secondary-accent-overlay" name="commit" id="Subscribe">
+                <span class="newsletter__submit-text--large color--secondary-accent">{{ 'general.newsletter_form.submit' | t }}</span>
+              </button>
+            </span>
+          </div>
+        {% endif %}
+      {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Sign up to our newsletter"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Receive special offers and first look at new products."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}
