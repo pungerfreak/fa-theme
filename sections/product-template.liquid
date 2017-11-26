@@ -39,11 +39,11 @@ Check for any supporting pages
   {% assign current_variant = product.selected_or_first_available_variant %}
 
 
-  <div class="product-sticky">
+  <div class="product-sticky lg--two-fifths dt--one-quarter">
     <div class="wrapper">
       <div class="wrapper section--wrapper">
         <div class="grid grid--rev">
-          <div class="grid__item lg--two-fifths dt--one-quarter mt2 dt--pt4">
+          <div class="grid__item">
             {% include 'product-page-form' %}
           </div>
         </div>
@@ -51,15 +51,15 @@ Check for any supporting pages
     </div>
   </div>
 
+{% comment %}<div class="js--lightbox-trigger" data-target="aim-here">CLICK HERE</div>{% endcomment %}
+  {% comment %}<div class="grid product-single">{% endcomment %}
 
-  <div class="grid product-single">
+    <div class="grid__item lg--three-fifths dt--one-quarter text-center relative">
 
-    <div class="grid__item lg--three-fifths dt--three-quarters text-center relative">
-
-
+        
         {% if  product.images.size > 1 %}
         <div class="relative product-slider-holder mb4 lg--pb0 lg--mb4">
-          <div class="product-images-slider m0 p0">
+          <div class="slider-for product-images-slider m0 p0">
             {% for image in product.images %}
 
               {% if image.attached_to_variant? %}
@@ -70,7 +70,7 @@ Check for any supporting pages
                 {% endfor %}
               {% endif %}
 
-              <div class="product-images-slider__item {% if image.attached_to_variant? %}attached-to-variant{{ variant_classes }}{% endif %}">
+              <div data-set="set" class="{% if forloop.index == 1 %}aim-here {% endif %} product-images-slider__item {% if image.attached_to_variant? %}attached-to-variant{{ variant_classes }}{% endif %}">
                 {% comment %}
                 <img
                     src="{{ image.src | img_url: '1000x' }}"
@@ -92,6 +92,14 @@ Check for any supporting pages
                        alt="{{ image.alt }}"/>
                  </picture>
 
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="slider-nav" style="width: 200px">
+            {% for image in product.images %}
+              <div>
+                <img src="{{ image.src | img_url: '80x' }}" >
               </div>
             {% endfor %}
           </div>
@@ -136,15 +144,15 @@ Check for any supporting pages
 
     </div><!-- end product form -->
 
-  </div><!-- end images and form grid -->
+  {% comment %}</div><!-- end images and form grid -->{% endcomment %}
 
 
-  <div class="mt3 lg--mt0 lg--pt4 product-content relative lg--three-fifths dt--three-quarters" itemprop="description">
-    <div class="grid grid--rev">
-      <div class="grid__item dt--six-eighths product-description rte rte--shop">
+{% comment %}  <div class="mt3 lg--mt0 lg--pt4 product-content relative lg--three-fifths dt--three-quarters" itemprop="description">
+    <div class="grid grid--rev">{% endcomment %}
+      <div class="grid__item lg--three-fifths dt--one-half product-content product-description">
         {{ product.description  }}
       </div>
-      <div class="grid__item dt--two-eighths mt3 lg--mt0  t--meta">
+      <div class="grid__item dt--one-quarter mt3 lg--mt0  t--meta" style="display: none;">
 
         {% if section.settings.show_share_links %}
           {% include 'share' %}
@@ -177,9 +185,9 @@ Check for any supporting pages
         {% endif %}
 
       </div>
-    </div>
+{% comment %}    </div>
 
-  </div>
+  </div>{% endcomment %}
 
 
   </div>
