@@ -96,7 +96,7 @@ Check for any supporting pages
             {% endfor %}
           </div>
 
-          <div class="slider-nav" style="width: 200px">
+          <div class="slider-nav">
             {% for image in product.images %}
               <div>
                 <img src="{{ image.src | img_url: '80x' }}" >
@@ -149,7 +149,7 @@ Check for any supporting pages
 
 {% comment %}  <div class="mt3 lg--mt0 lg--pt4 product-content relative lg--three-fifths dt--three-quarters" itemprop="description">
     <div class="grid grid--rev">{% endcomment %}
-      <div class="grid__item lg--three-fifths dt--one-half product-content product-description">
+      <div class="grid__item lg--three-fifths dt--one-half rte rte--shop product-content product-description">
         {{ product.description  }}
       </div>
       <div class="grid__item dt--one-quarter mt3 lg--mt0  t--meta" style="display: none;">

@@ -64,6 +64,103 @@
 
 
 
+  <div class="site-header__main grid--full grid--table grid--rev">
+  {% comment %}
+    Desktop meta (cart, search, social)
+  {% endcomment %}
+  <div class="site-header__main grid__item text-right md-dn--hide lg--three-fifths dt--one-half site-header__meta-navigation">
+    {% comment %}
+    grid__item lg--one-half md-dn--hide text-right
+    {% endcomment %}
+
+
+    {% include 'social', class: '--header' %}
+
+
+    <ul class="header_desktop-meta list-reset align--middle inline-block inline-list">
+      {% if shop.customer_accounts_enabled %}
+      <li class="header_desktop-meta-item relative">
+        <button type="button" class="login js-login font-size--s">
+          {% include 'svg-icon', icon: 'user' %}
+        </button>
+        <div class="account-expanded p2">
+            <ul class="inline-list child-nav child-list-customer font-size--s t--meta m0 p0">
+            {% if customer %}
+              <li class="customer-item first">
+                {% if customer.first_name != blank %}
+                  {% capture first_name %}{{ customer.first_name }}{% endcapture %}
+                  <a href="/account" class="account-link">{{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}</a>
+                {% else %}
+                  <a href="/account" class="">{{ 'layout.customer.account' | t }}</a>
+                {% endif %}
+              </li>
+              <span class="px1">&#124;</span>
+              <li class="customer-item">
+                {{ 'layout.customer.log_out' | t | customer_logout_link }}
+              </li>
+            {% else %}
+              <li class="customer-item first">
+                {{ 'layout.customer.log_in' | t | customer_login_link }}
+              </li>
+              {% if shop.customer_accounts_optional %}
+              <span class="px1">&#124;</span>
+              <li class="customer-item">
+                {{ 'layout.customer.create_account' | t | customer_register_link }}
+              </li>
+              {% endif %}
+            {% endif %}
+            </ul>
+        </div>
+      </li>
+      {% endif %}
+      {% if section.settings.show_search %}
+      <li class="header_desktop-meta-item">
+        <button type="button" class="js--search-trigger font-size--s">
+          {% include 'svg-icon', icon: 'search' %}
+        </button>
+      </li>
+      {% endif %}
+      <li class="header_desktop-meta-item">
+        <a href="/cart" class="js--drawer-open-right font-size--s" aria-controls="NavDrawer" aria-expanded="false">
+          {% include 'svg-icon', icon: 'cart' %}
+          <span id="CartCount" class="cart-count">{{ cart.item_count }}</span>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+
+  {% comment %}Site Logo{% endcomment %}
+
+  <div class="site-header__main grid__item md-dn--one-whole dt--one-half lg--two-fifths  site-header__logo-container">
+
+    {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
+    {% capture image_size_px %}{{ section.settings.logo_max_width | escape }}px{% endcapture %}
+    {% capture image_size_2x %}{{ section.settings.logo_max_width | times: 2 }}x{% endcapture %}
+
+    {% if template == 'index' %}
+      <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization">
+    {% else %}
+      <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization">
+    {% endif %}
+      {% if section.settings.logo %}
+        <a href="/" itemprop="url" class="site-header__logo-link">
+          <img src="//cdn.shopify.com/s/files/1/2372/4967/files/addicted-exclusive.svg?17046170511383777648" itemprop="logo" alt="{{ shop.name }}">
+          {% comment %}<img src="{{ section.settings.logo | img_url: image_size_2x }}" alt="{{ shop.name }}" itemprop="logo" width="{{ image_size }}">{% endcomment %}
+        </a>
+      {% else %}
+        <a href="/" itemprop="url" class="text-align--center">{{ shop.name }}</a>
+      {% endif %}
+    {% if template == 'index' %}
+      </h1>
+    {% else %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  </div>
+
   <div class="site-header__main grid--full grid--table ">
 
     {% comment %}
@@ -79,7 +176,7 @@
       Main navigation
     {% endcomment %}
 
-    <div class="grid__item lg--one-half md-dn--hide site-nav-holder">
+    <div class="grid__item md-dn--hide site-nav-holder">
 
 
       <!-- begin site-nav -->
@@ -121,103 +218,6 @@
       <!-- //site-nav -->
     </div>
 
-
-    <div class="grid__item site-header__logo-col text-center">
-
-      {% capture image_size %}{{ section.settings.logo_max_width | escape }}x{% endcapture %}
-      {% capture image_size_px %}{{ section.settings.logo_max_width | escape }}px{% endcapture %}
-      {% capture image_size_2x %}{{ section.settings.logo_max_width | times: 2 }}x{% endcapture %}
-
-      {% comment %}
-      Style the logo grid item to be the same width set as the logo
-      {% endcomment %}
-      <style>
-        .site-header__logo-col {
-          width: {{ image_size_px }};
-        }
-      </style>
-
-      {% if template == 'index' %}
-        <h1 class="site-header__logo" itemscope itemtype="http://schema.org/Organization">
-      {% else %}
-        <div class="h1 site-header__logo" itemscope itemtype="http://schema.org/Organization">
-      {% endif %}
-        {% if section.settings.logo %}
-          <a href="/" itemprop="url" class="site-header__logo-link">
-            <img src="{{ section.settings.logo | img_url: image_size_2x }}" alt="{{ shop.name }}" itemprop="logo" width="{{ image_size }}">
-          </a>
-        {% else %}
-          <a href="/" itemprop="url" class="text-align--center">{{ shop.name }}</a>
-        {% endif %}
-      {% if template == 'index' %}
-        </h1>
-      {% else %}
-        </div>
-      {% endif %}
-
-    </div>
-
-    {% comment %}
-      Desktop meta (cart, search, social)
-    {% endcomment %}
-    <div class="grid__item lg--one-half md-dn--hide text-right">
-
-
-      {% include 'social', class: '--header' %}
-
-
-      <ul class="header_desktop-meta list-reset align--middle inline-block inline-list">
-        {% if shop.customer_accounts_enabled %}
-        <li class="header_desktop-meta-item relative">
-          <button type="button" class="login js-login font-size--s">
-            {% include 'svg-icon', icon: 'user' %}
-          </button>
-          <div class="account-expanded p2">
-              <ul class="inline-list child-nav child-list-customer font-size--s t--meta m0 p0">
-              {% if customer %}
-                <li class="customer-item first">
-                  {% if customer.first_name != blank %}
-                    {% capture first_name %}{{ customer.first_name }}{% endcapture %}
-                    <a href="/account" class="account-link">{{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}</a>
-                  {% else %}
-                    <a href="/account" class="">{{ 'layout.customer.account' | t }}</a>
-                  {% endif %}
-                </li>
-                <span class="px1">&#124;</span>
-                <li class="customer-item">
-                  {{ 'layout.customer.log_out' | t | customer_logout_link }}
-                </li>
-              {% else %}
-                <li class="customer-item first">
-                  {{ 'layout.customer.log_in' | t | customer_login_link }}
-                </li>
-                {% if shop.customer_accounts_optional %}
-                <span class="px1">&#124;</span>
-                <li class="customer-item">
-                  {{ 'layout.customer.create_account' | t | customer_register_link }}
-                </li>
-                {% endif %}
-              {% endif %}
-              </ul>
-          </div>
-        </li>
-        {% endif %}
-        {% if section.settings.show_search %}
-        <li class="header_desktop-meta-item">
-          <button type="button" class="js--search-trigger font-size--s">
-            {% include 'svg-icon', icon: 'search' %}
-          </button>
-        </li>
-        {% endif %}
-        <li class="header_desktop-meta-item">
-          <a href="/cart" class="js--drawer-open-right font-size--s" aria-controls="NavDrawer" aria-expanded="false">
-            {% include 'svg-icon', icon: 'cart' %}
-            <span id="CartCount" class="cart-count">{{ cart.item_count }}</span>
-          </a>
-        </li>
-      </ul>
-
-    </div>
 
     {% comment %}
       Mobile cart icon
