@@ -638,25 +638,6 @@ theme.header = function() {
 
   theme.header.navWidth =  $navMeasure.outerWidth();
   theme.header.colBreakpoint = (theme.header.navWidth  + 20);
-
-  //$navMeasure.remove();
-  function checkNav() {
-    var columnWidth = $('.site-nav-holder').outerWidth();
-    if(columnWidth > theme.header.colBreakpoint) {
-      $nav.removeClass('hide');
-      $mobileIcon.removeClass('site-header__mobile-icon--show');
-    }  else {
-      $nav.addClass('hide');
-      $mobileIcon.addClass('site-header__mobile-icon--show');
-    }
-  }
-
-  checkNav();
-  window.addEventListener("resize", checkNav, false);
-  $(window).resize(function() {
-    checkNav();
-  });
-
 };
 
 theme.accessibleNav = function () {
@@ -1056,20 +1037,20 @@ theme.youtubeUploads = function($container) {
   var $channelid = $container.data('channelid');
   var $channelname = $container.data('channelname');
   if( $channelname !== '') {
-		url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=" + $channelname + "&key=AIzaSyCS-YttuRPQoPcgidW7ds4LPrneoRWHwSI";
-	} else {
-		url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=" + $channelid + "&key=AIzaSyCS-YttuRPQoPcgidW7ds4LPrneoRWHwSI";
-	}
+    url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=" + $channelname + "&key=AIzaSyCS-YttuRPQoPcgidW7ds4LPrneoRWHwSI";
+  } else {
+    url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=" + $channelid + "&key=AIzaSyCS-YttuRPQoPcgidW7ds4LPrneoRWHwSI";
+  }
 
   $.ajax({
     url: url,
     type: "get",
     dataType: "jsonp",
     success: function(data) {
-			playlistID = data.items[0].contentDetails.relatedPlaylists.uploads;
+      playlistID = data.items[0].contentDetails.relatedPlaylists.uploads;
       theme.youtubePlaylist(playlistID, $container);
-		}
-	});
+    }
+  });
 };
 
 theme.youtubePlaylist = function(playlistID, $container) {
@@ -1579,7 +1560,7 @@ theme.productSticky = function() {
     // Create the listener function
   var updateLayout = _.debounce(function(e) {
 
-  	// Does all the layout updating here
+    // Does all the layout updating here
 
     $('.product-sticky').removeClass("fade fixed fixed--bottom");
     Waypoint.refreshAll();
